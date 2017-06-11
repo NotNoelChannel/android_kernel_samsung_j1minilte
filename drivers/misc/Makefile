@@ -79,3 +79,4 @@ obj-$(CONFIG_MDBG)  += mdbg/
 obj-y	+= sprd_dwnload/
 obj-$(CONFIG_SCX35L_SCENARIO_DFS) += scx35_scenario_dmc.o
 obj-$(CONFIG_SPRD_OSC)   += sprd_osc.o
+obj-$(CONFIG_UID_CPUTIME) += uid_cputime.o
