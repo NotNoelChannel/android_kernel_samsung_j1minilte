@@ -2,3 +2,4 @@
 header-y += edid.h
 header-y += sisfb.h
 header-y += uvesafb.h
+header-y += isp_drv_kernel.h
