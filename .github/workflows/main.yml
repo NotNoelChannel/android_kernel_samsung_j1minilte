@@ -18,7 +18,7 @@ jobs:
     - name: Building Kernel
       run: |
         make -j2 j1minilte_defconfig
-        make $(nproc --all)
+        make -j$(nproc --all)
     - name: Moving Output # CI only
       run: |
         mkdir -p /home/runner/work/output
