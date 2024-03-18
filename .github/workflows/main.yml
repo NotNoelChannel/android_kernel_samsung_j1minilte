@@ -1,0 +1,37 @@
+name: CyanogenMod Kernel CI
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Kernel Source
+      uses: actions/checkout@v2
+
+    - name: Getting Toolchain
+      run: |
+        sudo apt-get install lib32z1
+        sudo git clone --depth 1 --branch android-5.1.1_r38 --single-branch https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-eabi-4.8 /opt/toolchains/arm-eabi-4.8/
+    - name: Building Kernel
+      run: |
+        export CROSS_COMPILE=/opt/toolchains/arm-eabi-4.8/bin/arm-eabi-
+        make -j2 j1minilte_defconfig
+        make -j$(nproc --all)
+    - name: Moving Output # CI only
+      run: |
+        mkdir -p /home/runner/work/output
+        cp arch/arm/boot/zImage /home/runner/work/output/zImage
+        find . -name "*.ko" -exec cp {} /home/runner/work/output/ \;
+    - name: Uploading Output
+      uses: actions/upload-artifact@v2
+      with:
+        name: zImage
+        path: /home/runner/work/output/zImage
+    - name: Uploading Modules
+      uses: actions/upload-artifact@v2
+      with:
+        name: modules
+        path: /home/runner/work/output/*.ko
